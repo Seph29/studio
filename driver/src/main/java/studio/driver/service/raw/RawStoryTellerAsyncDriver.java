@@ -418,7 +418,7 @@ public class RawStoryTellerAsyncDriver implements StoryTellerAsyncDriver {
             LOGGER.info("Transferring pack ({}) to device: {} ({} sectors)", uuid, FileUtils.readableByteSize(packSize),
                     packSizeInSectors);
         }
-        return LibUsbMassStorageHelper.executeOnDeviceHandle(this.device, handle -> 
+        return LibUsbMassStorageHelper.executeOnDeviceHandle(this.device, handle ->
             // Find first large-enough free space
             findFirstSuitableSector(handle, packSizeInSectors)
                     .thenCompose(startSector -> {

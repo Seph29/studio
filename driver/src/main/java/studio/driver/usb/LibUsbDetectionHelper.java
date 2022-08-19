@@ -41,7 +41,7 @@ public class LibUsbDetectionHelper {
     /**
      * Initialize libusb context, start async event handling worker thread, register
      * hotplug listener, and handle de-initialization on JVM shutdown.
-     * 
+     *
      * @param deviceVersion The version of the device to detect
      * @param listener      A hotplug listener
      */
@@ -89,7 +89,7 @@ public class LibUsbDetectionHelper {
 
     /**
      * De-initialize libusb context and stop worker threads when JVM exits
-     * 
+     *
      * @param asyncEventHandlerWorker
      */
     private static void registerHook(Context context, LibUsbAsyncEventsWorker asyncEventHandlerWorker) {

@@ -75,3 +75,9 @@ jobs:
         path: web-ui/target/*.zip
       if: matrix.mode == 'deploy'
 
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: web-ui/target/*.zip
+      if: matrix.mode == 'deploy'
+      if: startsWith(github.ref, 'refs/tags/')

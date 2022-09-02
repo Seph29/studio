@@ -81,7 +81,7 @@ class LibraryControllerTest {
                         "[0].packs[0].title", is("SimplifiedSamplePack"), //
                         "[0].packs[0].nightModeAvailable", is(false), //
                         "[0].packs[0].official", is(false), //
-                        "[0].packs[0].sizeInBytes", is(0) //
+                        "[0].packs[0].size", is(3328000) //
                 );
     }
 
@@ -171,7 +171,7 @@ class LibraryControllerTest {
                         "[0].packs[0].title", is("SimplifiedSamplePack"), //
                         "[0].packs[0].nightModeAvailable", is(false), //
                         "[0].packs[0].official", is(false), //
-                        "[0].packs[0].sizeInBytes", is(0), //
+                        "[0].packs[0].size", is(3328000), //
 
                         "[0].packs[1].path", is(TEST_PACK_NAME), //
                         "[0].packs[1].format", is(PackFormat.ARCHIVE.getLabel()), //
@@ -179,7 +179,7 @@ class LibraryControllerTest {
                         "[0].packs[1].title", is("SimplifiedSamplePack"), //
                         "[0].packs[1].nightModeAvailable", is(false), //
                         "[0].packs[1].official", is(false), //
-                        "[0].packs[1].sizeInBytes", is(0) //
+                        "[0].packs[1].size", is(0) //
                 );
     }
 

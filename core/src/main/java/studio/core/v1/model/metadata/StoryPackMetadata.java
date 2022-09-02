@@ -28,7 +28,7 @@ public class StoryPackMetadata {
     private String title;
     private String description;
     private byte[] thumbnail;
-    private Integer sectorSize;
+    private long size;
     private boolean nightModeAvailable;
     // 1st stageNode uuid
     private String uuidFirst;

@@ -10,6 +10,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.CompletableFuture;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -48,11 +49,13 @@ public class Studio {
             // Automatically open URL in browser, unless instructed otherwise
             if (openBrowser && Desktop.isDesktopSupported()) {
                 LOGGER.info("Opening URL in default browser...");
-                try {
-                    Desktop.getDesktop().browse(new URI("http://" + host + ":" + port));
-                } catch (IOException | URISyntaxException e) {
-                    LOGGER.error("Failed to open URL in default browser", e);
-                }
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        Desktop.getDesktop().browse(new URI("http://" + host + ":" + port));
+                    } catch (IOException | URISyntaxException e) {
+                        LOGGER.error("Failed to open URL in default browser", e);
+                    }
+                });
             }
         }
     }

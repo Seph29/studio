@@ -102,7 +102,7 @@ class DeviceControllerTest {
                         "[0].timestamp", is(0), //
                         "[0].nightModeAvailable", is(false), //
                         "[0].official", is(false), //
-                        "[0].sizeInBytes", is(0) //
+                        "[0].size", is(3328000) //
                 );
     }
 

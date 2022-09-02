@@ -457,6 +457,7 @@ class PackLibrary extends React.Component {
                                     <div className="pack-thumb" title={pack.nightModeAvailable && t('library.nightMode')}>
                                         <img src={pack.image || defaultImage} alt="" width="128" height="128" draggable={false} />
                                         <div className="pack-version"><span>{`v${pack.version}`}</span></div>
+                                        <div className="pack-version"><span>{`v${pack.size}`}</span></div>
                                         {pack.official && <div className="pack-ribbon"><span>{t('library.official')}</span></div>}
                                     </div>
                                     <div className="pack-title">
@@ -520,6 +521,7 @@ class PackLibrary extends React.Component {
                                                     {p.path}
                                                 </div>
                                                 <div className="pack-version"><span>{`v${p.version}`}</span></div>
+                                                <div className="pack-version"><span>{`${p.size} bytes`}</span></div>
                                                 <div className="pack-actions">
                                                     {p.format !== 'archive' && <button className="pack-action" onClick={this.onConvertLibraryPack(p, 'archive')}>
                                                         <span role="img" aria-label="to archive" title={t('library.local.convertPackToArchive')}>&#10132;&#x1f5dc;</span>

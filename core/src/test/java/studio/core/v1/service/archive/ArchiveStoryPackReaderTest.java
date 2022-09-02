@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +52,7 @@ class ArchiveStoryPackReaderTest {
         metaExpected.setTitle("SimplifiedSamplePack");
         metaExpected.setUuid("60f84e3d-8a37-4b4a-9e67-fc13daad9bb9");
         metaExpected.setDescription("");
-        metaExpected.setSectorSize(null);
+        metaExpected.setSize(Files.size(zipPath));
         metaExpected.setThumbnail(null);
 
         assertAll("StoryPackMetadata", //
@@ -59,7 +60,7 @@ class ArchiveStoryPackReaderTest {
                 () -> assertEquals(metaExpected.getTitle(), metaActual.getTitle()),
                 () -> assertEquals(metaExpected.getVersion(), metaActual.getVersion()),
                 () -> assertEquals(metaExpected.getDescription(), metaActual.getDescription()),
-                () -> assertEquals(metaExpected.getSectorSize(), metaActual.getSectorSize()),
+                () -> assertEquals(metaExpected.getSize(), metaActual.getSize()),
                 () -> assertEquals(metaExpected.getFormat(), metaActual.getFormat()),
                 () -> assertArrayEquals(metaExpected.getThumbnail(), metaActual.getThumbnail()));
     }

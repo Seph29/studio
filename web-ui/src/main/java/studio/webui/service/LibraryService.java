@@ -178,7 +178,6 @@ public class LibraryService {
             LOGGER.debug("Reading metadata {} from pack: {}", inputFormat, path);
             StoryPackMetadata meta = inputFormat.getReader().readMetadata(path);
             if (meta != null) {
-                meta.setSectorSize((int) Math.ceil(Files.size(path) / 512d));
                 return Optional.of(new LibraryPackDTO(path, Files.getLastModifiedTime(path).toMillis(), meta));
             }
         } catch (IOException e) {
@@ -197,7 +196,7 @@ public class LibraryService {
         mp.setPath(pack.getPath().getFileName().toString());
         mp.setTimestamp(pack.getTimestamp());
         mp.setNightModeAvailable(spMeta.isNightModeAvailable());
-        mp.setSectorSize(spMeta.getSectorSize());
+        mp.setSize(spMeta.getSize());
         mp.setTitle(spMeta.getTitle());
         mp.setDescription(spMeta.getDescription());
         Optional.ofNullable(spMeta.getThumbnail()).ifPresent(this::base64);

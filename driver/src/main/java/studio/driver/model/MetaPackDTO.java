@@ -22,9 +22,6 @@ public final class MetaPackDTO {
     private String title;
     private String description;
     private String image; // thumbnail in base64
-    private Integer sectorSize;
+    private long size;
     private boolean official;
-
-    private String folderName; // FS only
-    private long sizeInBytes; // FS only
 }

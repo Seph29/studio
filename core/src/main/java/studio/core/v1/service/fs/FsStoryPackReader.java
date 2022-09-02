@@ -35,6 +35,7 @@ import studio.core.v1.model.metadata.StoryPackMetadata;
 import studio.core.v1.service.PackFormat;
 import studio.core.v1.service.StoryPackReader;
 import studio.core.v1.service.fs.FsStoryPackDTO.FsStoryPack;
+import studio.core.v1.utils.io.FileUtils;
 import studio.core.v1.utils.security.XXTEACipher;
 import studio.core.v1.utils.security.XXTEACipher.CipherMode;
 
@@ -45,18 +46,19 @@ public class FsStoryPackReader implements StoryPackReader {
     @Override
     public StoryPackMetadata readMetadata(Path inputFolder) throws IOException {
         // Pack metadata model
-        StoryPackMetadata metadata = new StoryPackMetadata(PackFormat.FS);
+        StoryPackMetadata spm = new StoryPackMetadata(PackFormat.FS);
         FsStoryPack fsp = new FsStoryPack(inputFolder);
         // Open 'ni' file
         try (InputStream niDis = new BufferedInputStream(Files.newInputStream(fsp.getNodeIndex()))) {
             ByteBuffer bb = ByteBuffer.wrap(niDis.readNBytes(512)).order(ByteOrder.LITTLE_ENDIAN);
-            metadata.setVersion(bb.getShort(2));
+            spm.setVersion(bb.getShort(2));
         }
+        spm.setSize(FileUtils.getFolderSize(inputFolder));
         // Get uuid from folder name
-        metadata.setUuid(fsp.getUuid());
+        spm.setUuid(fsp.getUuid());
         // Night mode is available if file 'nm' exists
-        metadata.setNightModeAvailable(fsp.isNightModeAvailable());
-        return metadata;
+        spm.setNightModeAvailable(fsp.isNightModeAvailable());
+        return spm;
     }
 
     @Override

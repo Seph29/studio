@@ -61,18 +61,19 @@ public class RawStoryPackReader implements StoryPackReader {
     public StoryPackMetadata readMetadata(Path path) throws IOException {
         try (DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(path)))) {
             // Pack metadata model
-            StoryPackMetadata metadata = new StoryPackMetadata(PackFormat.RAW);
+            StoryPackMetadata spm = new StoryPackMetadata(PackFormat.RAW);
+            spm.setSize(Files.size(path));
 
             // Read sector 1
             dis.skipBytes(3); // Skip to version
-            metadata.setVersion(dis.readShort());
+            spm.setVersion(dis.readShort());
 
             // Read (optional) enriched pack metadata
             dis.skipBytes(BINARY_ENRICHED_METADATA_SECTOR_1_ALIGNMENT_PADDING);
             Optional<String> maybeTitle = readString(dis, BINARY_ENRICHED_METADATA_TITLE_TRUNCATE);
-            metadata.setTitle(maybeTitle.orElse(null));
+            spm.setTitle(maybeTitle.orElse(null));
             Optional<String> maybeDescription = readString(dis, BINARY_ENRICHED_METADATA_DESCRIPTION_TRUNCATE);
-            metadata.setDescription(maybeDescription.orElse(null));
+            spm.setDescription(maybeDescription.orElse(null));
             // TODO Thumbnail?
 
             // Skip to end of sector
@@ -82,8 +83,8 @@ public class RawStoryPackReader implements StoryPackReader {
                     - BINARY_ENRICHED_METADATA_DESCRIPTION_TRUNCATE * 2);
 
             // Read main stage node UUID
-            metadata.setUuid(readUuid(dis));
-            return metadata;
+            spm.setUuid(readUuid(dis));
+            return spm;
         }
     }
 

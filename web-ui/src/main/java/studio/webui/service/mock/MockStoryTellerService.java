@@ -148,7 +148,6 @@ public class MockStoryTellerService implements IStoryTellerService {
                 LOGGER.debug("Reading binary pack metadata.");
                 StoryPackMetadata meta = new RawStoryPackReader().readMetadata(path);
                 if (meta != null) {
-                    meta.setSectorSize((int) Math.ceil(Files.size(path) / 512d));
                     return Optional.of(meta);
                 }
             } catch (IOException e) {
@@ -233,8 +232,8 @@ public class MockStoryTellerService implements IStoryTellerService {
         mp.setUuid(pack.getUuid());
         mp.setFormat(PackFormat.RAW.getLabel());
         mp.setVersion(pack.getVersion());
+        mp.setSize(pack.getSize());
 
-        mp.setSectorSize(pack.getSectorSize());
         // add meta
         databaseMetadataService.getMetadata(pack.getUuid()).ifPresent(meta -> {//
             mp.setTitle(meta.getTitle());

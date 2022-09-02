@@ -36,18 +36,19 @@ public class ArchiveStoryPackReader implements StoryPackReader {
             if (Files.notExists(story)) {
                 return null;
             }
-            StoryPackMetadata spMeta = objectMapper.readValue(Files.readAllBytes(story), StoryPackMetadata.class);
-            spMeta.setPackFormat(PackFormat.ARCHIVE);
+            StoryPackMetadata spm = objectMapper.readValue(Files.readAllBytes(story), StoryPackMetadata.class);
+            spm.setPackFormat(PackFormat.ARCHIVE);
+            spm.setSize(Files.size(zipPath));
             // set storypack uuid (if missing) from 1st node
-            if (spMeta.getUuid() == null) {
-                spMeta.setUuid(spMeta.getUuidFirst());
+            if (spm.getUuid() == null) {
+                spm.setUuid(spm.getUuidFirst());
             }
             // Pack thumbnail
             Path thumb = zipFs.getPath("thumbnail.png");
             if (Files.exists(thumb)) {
-                spMeta.setThumbnail(Files.readAllBytes(thumb));
+                spm.setThumbnail(Files.readAllBytes(thumb));
             }
-            return spMeta;
+            return spm;
         }
     }
 

@@ -233,7 +233,7 @@ public class RawStoryTellerAsyncDriver implements StoryTellerAsyncDriver {
                     mp.setUuid(pack.getUuid().toString());
                     mp.setFormat(PackFormat.RAW.getLabel());
                     mp.setVersion(pack.getVersion());
-                    mp.setSectorSize(pack.getSizeInSectors());
+                    mp.setSize(pack.getSizeInSectors() * SECTOR_SIZE);
                     return mp;
                 }).collect(Collectors.toList()));
     }

@@ -224,7 +224,7 @@ public class FsStoryTellerAsyncDriver implements StoryTellerAsyncDriver {
 
                 // Compute .content folder (last 4 bytes of UUID)
                 String folderName = transformUuid(uuid);
-                packInfos.setFolderName(folderName);
+                packInfos.setPath(folderName);
                 Path packPath = sdPartition.getContentFolder().resolve(folderName);
                 FsStoryPack fsp = new FsStoryPack(packPath);
                 // Night mode is available if file 'nm' exists
@@ -236,12 +236,12 @@ public class FsStoryTellerAsyncDriver implements StoryTellerAsyncDriver {
                     short version = bb.getShort(2);
                     packInfos.setVersion(version);
                     // Compute folder size
-                    packInfos.setSizeInBytes(FileUtils.getFolderSize(packPath));
+                    packInfos.setSize(FileUtils.getFolderSize(packPath));
                 } catch (IOException e) {
                     throw new StoryTellerException("Failed to read pack version " + packPath, e);
                 }
                 packs.add(packInfos);
-                LOGGER.debug("Pack v{} {} ({})", packInfos.getVersion(), packInfos.getFolderName(),
+                LOGGER.debug("Pack v{} {} ({})", packInfos.getVersion(), packInfos.getPath(),
                         packInfos.getUuid());
             }
             return packs;

@@ -19,6 +19,13 @@ jobs:
           java-version: 11
           cache: maven
 
+      - name: GraalVM
+        uses: ayltai/setup-graalvm@v1
+        with:
+          java-version: 11
+          graalvm-version: 21.2.0
+          native-image: true
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:

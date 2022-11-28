@@ -236,6 +236,5 @@
                 <skipITs>false</skipITs>
             </properties>
         </profile>
-
     </profiles>
 </project>

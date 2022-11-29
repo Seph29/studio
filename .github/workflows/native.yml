@@ -77,7 +77,7 @@ jobs:
           - os: ubuntu-latest
             jdk-suffix: linux-amd64.tar.gz
             native-cmd: |
-              mvn verify -B -Pnative -Pide -Pheadfull -DskipTests
+              mvn verify -B -Pnative,ide,headfull -DskipTests
               echo "artifact_name=$(ls web-ui/target/*runner)" >> $GITHUB_ENV
 
           - os: macOS-latest

@@ -110,7 +110,10 @@ public class LibraryController {
             PackFormat packFormat = PackFormat.valueOf(pack.getFormat().toUpperCase());
             var newPackPath = libraryService.convertPack(pack.getPath(), packFormat, pack.isAllowEnriched());
             return new SuccessPathDTO(true, newPackPath.toString());
-        }, Infrastructure.getDefaultWorkerPool() );
+        }, 
+Infrastructure.getDefaultExecutor()
+// Infrastructure.getDefaultWorkerPool() 
+      );
     }
 
     /** Remove library pack. */

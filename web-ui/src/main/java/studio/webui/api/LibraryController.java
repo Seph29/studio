@@ -74,7 +74,7 @@ public class LibraryController {
             long t2 = System.currentTimeMillis();
             LOGGER.info("Library packs scanned in {}ms", t2 - t1);
             return libraryPacks;
-        }  Infrastructure.getDefaultWorkerPool() );
+        }, Infrastructure.getDefaultWorkerPool() );
     }
 
     /** Download existing library pack. */

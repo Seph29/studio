@@ -74,8 +74,7 @@ jobs:
           # Upx support (win): only<22, see https://github.com/oracle/graal/issues/4340
           # AWT support (win & mac): only Liberica>22 see https://bell-sw.com/announcements/2022/08/05/liberica-native-image-kit-22-2-0-and-21-3-3-builds-are-out/#create-a-native-image-for-swingset2-app-linux-and-macos
 
-# headfull
-          - os: ubuntu-22.04
+          - os: ubuntu-latest
             jdk-suffix: linux-amd64.tar.gz
             native-cmd: |
               mvn verify -B -Pnative,ide -DskipTests
@@ -120,7 +119,6 @@ jobs:
         with:
           version: mandrel-latest
           java-version: 17
-          components: native-image
           cache: maven
           github-token: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ runner.os == 'Linux' }}

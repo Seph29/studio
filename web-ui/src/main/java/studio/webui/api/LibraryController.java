@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-
 package studio.webui.api;
 
 import java.util.List;
@@ -25,6 +24,7 @@ import org.jboss.resteasy.reactive.MultipartForm;
 import org.jboss.resteasy.reactive.PartType;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
+import io.smallrye.mutiny.infrastructure.Infrastructure;
 import io.smallrye.common.annotation.NonBlocking;
 import studio.core.v1.service.PackFormat;
 import studio.webui.model.LibraryDTOs.PackDTO;
@@ -104,14 +104,13 @@ public class LibraryController {
     /** Convert library pack. */
     @POST
     @Path("convert")
-    public SuccessPathDTO convert(PackDTO pack) {
-// CompletionStage<>
+    public CompletionStage<SuccessPathDTO> convert(PackDTO pack) {
         // Perform conversion/uncompression asynchronously
-//        return CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             PackFormat packFormat = PackFormat.valueOf(pack.getFormat().toUpperCase());
             var newPackPath = libraryService.convertPack(pack.getPath(), packFormat, pack.isAllowEnriched());
             return new SuccessPathDTO(true, newPackPath.toString());
-//        });
+        }, Infrastructure.getDefaultWorkerPool() );
     }
 
     /** Remove library pack. */

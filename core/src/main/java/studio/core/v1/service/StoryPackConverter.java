@@ -204,13 +204,11 @@ public class StoryPackConverter {
         Map<String, byte[]> assets = new ConcurrentHashMap<>();
         List<MediaAsset> medias = storyPack.assets(mg == MediaGroup.IMAGE);
         AtomicInteger i = new AtomicInteger(0);
-        LOGGER.info("Threadcount: {}", Thread.activeCount());
 
         // Multi-threaded processing
         medias.parallelStream().forEach(StoppingConsumer.stopped(a -> {
             if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("{} from node {}/{} [{}]", mg, i.incrementAndGet(), medias.size(),
-                        Thread.currentThread().getThreadGroup().getName());
+                LOGGER.info("{} from node {}/{}", mg, i.incrementAndGet(), medias.size());
             }
             String assetHash = a.findHash();
             // Update data (converted if needed)

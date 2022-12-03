@@ -67,14 +67,15 @@ public class LibraryController {
     /** List library packs. */
     @GET
     @Path("packs")
-    public CompletionStage<List<UuidPacksDTO>> packs() {
-        return CompletableFuture.supplyAsync(() -> {
+    public List<UuidPacksDTO> packs() {
+// CompletionStage<>
+//        return CompletableFuture.supplyAsync(() -> {
             long t1 = System.currentTimeMillis();
             List<UuidPacksDTO> libraryPacks = libraryService.packs();
             long t2 = System.currentTimeMillis();
             LOGGER.info("Library packs scanned in {}ms", t2 - t1);
             return libraryPacks;
-        });
+//        });
     }
 
     /** Download existing library pack. */
@@ -103,13 +104,14 @@ public class LibraryController {
     /** Convert library pack. */
     @POST
     @Path("convert")
-    public CompletionStage<SuccessPathDTO> convert(PackDTO pack) {
+    public SuccessPathDTO convert(PackDTO pack) {
+// CompletionStage<>
         // Perform conversion/uncompression asynchronously
-        return CompletableFuture.supplyAsync(() -> {
+//        return CompletableFuture.supplyAsync(() -> {
             PackFormat packFormat = PackFormat.valueOf(pack.getFormat().toUpperCase());
             var newPackPath = libraryService.convertPack(pack.getPath(), packFormat, pack.isAllowEnriched());
             return new SuccessPathDTO(true, newPackPath.toString());
-        });
+//        });
     }
 
     /** Remove library pack. */

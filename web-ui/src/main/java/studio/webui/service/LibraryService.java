@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-
 package studio.webui.service;
 
 import java.io.IOException;
@@ -90,26 +89,14 @@ public class LibraryService {
 
             // Converts metadata to Json
             List<UuidPacksDTO> jsonMetasByUuid = metadataByUuid.entrySet().parallelStream()
+                    // update local database
+                    .filter( e-> updateDatabase(e.getValue()) )
                     // convert
-                    .peek(e -> {
-                        // update database only with zip metadata
-                        for (LibraryPackDTO lp : e.getValue()) {
-                            StoryPackMetadata meta = lp.getMetadata();
-                            if(meta.getPackFormat() == PackFormat.ARCHIVE ) {
-                                LOGGER.debug("Refresh metadata from zip for {} ({})", meta.getUuid(), meta.getTitle());
-                                String thumbBase64 = Optional.ofNullable(meta.getThumbnail()).map(this::base64).orElse(null);
-                                databaseMetadataService.updateLibrary(new DatabasePackMetadata( //
-                                            meta.getUuid(), meta.getTitle(), meta.getDescription(), thumbBase64, false));
-                                return;
-                            }
-                        }
-                    }) //
                     .map(e-> {
                         // Convert to MetaPackDTO
                         List<MetaPackDTO> jsonMetaList = e.getValue().stream() //
                                 .map(this::toDto) //
                                 .collect(Collectors.toList());
-
                         return new UuidPacksDTO(e.getKey(), jsonMetaList);
                     }) //
                     .collect(Collectors.toList());
@@ -183,6 +170,21 @@ public class LibraryService {
         }
         // Ignore other files OR read error
         return Optional.empty();
+    }
+
+    private boolean updateDatabase(List<LibraryPackDTO> packs) {
+        // update database only with zip metadata
+        for (LibraryPackDTO lp : packs) {
+            StoryPackMetadata meta = lp.getMetadata();
+            if(meta.getPackFormat() == PackFormat.ARCHIVE ) {
+                LOGGER.debug("Refresh metadata from zip for {} ({})", meta.getUuid(), meta.getTitle());
+                String thumbBase64 = Optional.ofNullable(meta.getThumbnail()).map(this::base64).orElse(null);
+                databaseMetadataService.updateLibrary(new DatabasePackMetadata( //
+                    meta.getUuid(), meta.getTitle(), meta.getDescription(), thumbBase64, false));
+                return true;
+            }
+        }
+        return true;
     }
 
     private MetaPackDTO toDto(LibraryPackDTO pack) {

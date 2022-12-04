@@ -10,18 +10,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jboss.resteasy.reactive.MultipartForm;
-import org.jboss.resteasy.reactive.PartType;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
@@ -34,7 +28,6 @@ import studio.webui.model.LibraryDTOs.SuccessDTO;
 import studio.webui.model.LibraryDTOs.SuccessPathDTO;
 import studio.webui.model.LibraryDTOs.UuidPacksDTO;
 import studio.webui.service.LibraryService;
-
 @Path("/api/library")
 public class LibraryController {
 
@@ -42,16 +35,6 @@ public class LibraryController {
 
     @Inject
     LibraryService libraryService;
-
-    /** TODO : remove
-     * MultipartForm with 3 params/parts :
-     * <ul>
-     * <li>pack (APPLICATION_OCTET_STREAM)</li>
-     * <li>path (TEXT_PLAIN)</li>
-     * <li>uuid (TEXT_PLAIN)</li>
-     * </ul>
-     */
-    
 
     /** Get library metadata. */
     @GET
@@ -77,7 +60,6 @@ public class LibraryController {
     /** Download existing library pack. */
     @POST
     @Path("download")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @NonBlocking
     public java.nio.file.Path downloadZip(PathDTO pathData) {
         LOGGER.info("Download pack '{}'", pathData.getPath());
@@ -87,10 +69,8 @@ public class LibraryController {
     /** Upload new library pack. */
     @POST
     @Path("upload")
-    // @Consumes(MediaType.MULTIPART_FORM_DATA)
     @NonBlocking
-    public SuccessDTO uploadZip(//@MultipartForm UploadFormData formData) {
-        @RestForm("pack") FileUpload pack) {
+    public SuccessDTO uploadZip(@RestForm("pack") FileUpload pack) {
         String destName = pack.fileName();
         String uploadedName = pack.uploadedFile().toString();
         LOGGER.info("Upload pack '{}'", destName);

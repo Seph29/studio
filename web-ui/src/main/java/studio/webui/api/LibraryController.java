@@ -104,10 +104,12 @@ public class LibraryController {
     @POST
     @Path("convert")
     public CompletionStage<SuccessPathDTO> convert(PackDTO pack) {
-        // Perform conversion/uncompression asynchronously
         return CompletableFuture.supplyAsync(() -> {
             PackFormat packFormat = PackFormat.valueOf(pack.getFormat().toUpperCase());
+            long t1 = System.currentTimeMillis();
             var newPackPath = libraryService.convertPack(pack.getPath(), packFormat, pack.isAllowEnriched());
+            long t2 = System.currentTimeMillis();
+            LOGGER.info("Pack converted in {}ms", t2 - t1);
             return new SuccessPathDTO(true, newPackPath.toString());
         }, Infrastructure.getDefaultWorkerPool() );
     }

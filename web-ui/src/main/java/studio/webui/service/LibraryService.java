@@ -181,7 +181,7 @@ public class LibraryService {
                 String thumbBase64 = Optional.ofNullable(meta.getThumbnail()).map(this::base64).orElse(null);
                 databaseMetadataService.updateLibrary(new DatabasePackMetadata( //
                     meta.getUuid(), meta.getTitle(), meta.getDescription(), thumbBase64, false));
-                return true;
+                break;
             }
         }
         return true;

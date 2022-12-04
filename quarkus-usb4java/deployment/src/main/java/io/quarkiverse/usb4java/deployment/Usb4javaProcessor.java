@@ -34,7 +34,7 @@ class Usb4javaProcessor {
     void nativeJni(NativeConfig nativeConfig,
             BuildProducer<NativeImageResourceBuildItem> nativeResources,
             BuildProducer<JniRuntimeAccessBuildItem> jniAccess,
-            BuildProducer<RuntimeInitializedClassBuildItem> runtimeClasses) throws IOException {
+            BuildProducer<RuntimeInitializedClassBuildItem> runtimeClasses) {
         // native binary path
         String src;
         if (nativeConfig.isContainerBuild()) {

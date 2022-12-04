@@ -91,23 +91,20 @@ public class LibraryService {
             // Converts metadata to Json
             List<UuidPacksDTO> jsonMetasByUuid = metadataByUuid.entrySet().parallelStream()
                     // convert
-                    .map(e -> {
-                        // find first zip pack
-                        e.getValue().stream()
-                                // get Metadata
-                                .map(LibraryPackDTO::getMetadata)
-                                // only zip
-                                .filter(meta -> meta.getPackFormat() == PackFormat.ARCHIVE) //
-                                // update database with newest zip
-                                .findFirst().ifPresent(meta -> {
-                                    LOGGER.debug("Refresh metadata from zip for {} ({})", meta.getUuid(),
-                                            meta.getTitle());
-                                    String thumbBase64 = Optional.ofNullable(meta.getThumbnail()).map(this::base64)
-                                            .orElse(null);
-                                    databaseMetadataService.updateLibrary(new DatabasePackMetadata( //
-                                            meta.getUuid(), meta.getTitle(), meta.getDescription(), thumbBase64,
-                                            false));
-                                });
+                    .peek(e -> {
+                        // update database only with zip metadata
+                        for (LibraryPackDTO lp : e.getValue()) {
+                            StoryPackMetadata meta = lp.getMetadata();
+                            if(meta.getPackFormat() == PackFormat.ARCHIVE ) {
+                                LOGGER.debug("Refresh metadata from zip for {} ({})", meta.getUuid(), meta.getTitle());
+                                String thumbBase64 = Optional.ofNullable(meta.getThumbnail()).map(this::base64).orElse(null);
+                                databaseMetadataService.updateLibrary(new DatabasePackMetadata( //
+                                            meta.getUuid(), meta.getTitle(), meta.getDescription(), thumbBase64, false));
+                                return;
+                            }
+                        }
+                    }) //
+                    .map(e-> {
                         // Convert to MetaPackDTO
                         List<MetaPackDTO> jsonMetaList = e.getValue().stream() //
                                 .map(this::toDto) //

@@ -3,8 +3,9 @@ package io.quarkiverse.usb4java.deployment;
 import static io.quarkus.deployment.builditem.nativeimage.ServiceProviderBuildItem.allProvidersFromClassPath;
 
 import java.io.IOException;
-import java.util.stream.Stream; 
+
 import org.jboss.logging.Logger;
+
 import io.quarkiverse.usb4java.runtime.Usb4javaRecorder;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;

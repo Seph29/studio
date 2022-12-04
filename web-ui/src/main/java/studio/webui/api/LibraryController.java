@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jboss.resteasy.reactive.MultipartForm;
 import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import io.smallrye.mutiny.infrastructure.Infrastructure;
@@ -42,7 +43,7 @@ public class LibraryController {
     @Inject
     LibraryService libraryService;
 
-    /**
+    /** TODO : remove
      * MultipartForm with 3 params/parts :
      * <ul>
      * <li>pack (APPLICATION_OCTET_STREAM)</li>
@@ -50,11 +51,7 @@ public class LibraryController {
      * <li>uuid (TEXT_PLAIN)</li>
      * </ul>
      */
-    public static class UploadFormData {
-        @FormParam("pack")
-        @PartType(MediaType.APPLICATION_OCTET_STREAM)
-        FileUpload pack;
-    }
+    
 
     /** Get library metadata. */
     @GET
@@ -90,11 +87,12 @@ public class LibraryController {
     /** Upload new library pack. */
     @POST
     @Path("upload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    // @Consumes(MediaType.MULTIPART_FORM_DATA)
     @NonBlocking
-    public SuccessDTO uploadZip(@MultipartForm UploadFormData formData) {
-        String destName = formData.pack.fileName();
-        String uploadedName = formData.pack.uploadedFile().toString();
+    public SuccessDTO uploadZip(//@MultipartForm UploadFormData formData) {
+        @RestForm("pack") FileUpload pack) {
+        String destName = pack.fileName();
+        String uploadedName = pack.uploadedFile().toString();
         LOGGER.info("Upload pack '{}'", destName);
         boolean status = libraryService.addPackFile(destName, uploadedName);
         return new SuccessDTO(status);
